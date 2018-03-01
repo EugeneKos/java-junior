@@ -22,8 +22,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
     //endregion
 
-    /*
-    TODO: implement Logger solution to match specification as tests
+
+    //TODO: implement Logger solution to match specification as tests
 
     @Test
     public void shouldLogIntegersArray() throws IOException {
@@ -31,9 +31,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log(new int[] {-1, 0, 1});
         //endregion
 
+
         //region then
         assertSysoutEquals(
-            "primitives array: {-1, 0, 1}\n"
+                "primitives array: {-1, 0, 1}\r\n"
         );
         //endregion
     }
@@ -46,14 +47,16 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-            "primitives matrix: {\n" +
-                "{-1, 0, 1}\n" +
-                "{1, 2, 3}\n" +
-                "{-1, -2, -3}\n" +
-            "}\n"
+                "primitives matrix: {\r\n" +
+                        "{-1, 0, 1}\r\n" +
+                        "{1, 2, 3}\r\n" +
+                        "{-1, -2, -3}\r\n" +
+                        "}\r\n"
         );
         //endregion
     }
+
+    /*
 
     @Test
     public void shouldLogIntegersMulitidimentionalArray() throws IOException {
@@ -71,6 +74,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         );
         //endregion
     }
+
+
 
     @Test
     public void shouldLogStringsWithOneMethodCall() throws IOException {
@@ -93,6 +98,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("3");
         //endregion
     }
+
 
     @Test
     public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {

@@ -8,49 +8,137 @@ gkjfhkgjfhg
  */
 
 
-import static com.acme.edu.Logger.*;
-import static java.lang.Math.sin;
-
 /**
  * Logs messages.
- * @author EK
+ *
  * @param
+ * @author EK
  * @see
  */
 public class Logger {
-    //region state
-    public static String state = null; //Global state
-    public static final String MY_CONST = "";
-    //endregion
 
-    static {
-        System.out.println(Logger.state);
-        log(1, 2);
-    }
+    public static int buffer = 0;
 
-    public static int log(int i1, int i2) {
-        int localIntVar = 0; //local, auto, temp, stack
+    private static String fullStr = "";
+    private static String lastStr = "";
+
+    public static void log(int message) {
         //region output
-        System.out.println("primitive: " + localIntVar);
-        return 0;
+        //flushStr();
+        buffer = checkOwerflowSum(message);
         //endregion
     }
 
+    private static int checkOwerflowSum(int message){
+        int sum = message + buffer;
+        if((sum < message || sum < buffer) && sum != message && sum != buffer){
+            print(buffer);
+        } else {
+            return sum;
+        }
+        return Integer.MAX_VALUE;
+    }
+
     public static void log(byte message) {
-        int localIntVar = 0;
-        System.out.println("primitive: " + message);
-        log(0);
+        //region output
+        
+        print(message,"primitive");
+        //print(message);
+        //endregion
     }
 
-    public static void log(int message) {
-        sin(0);
+    public static void log(char message) {
+        //region output
+        print(message,"char");
+        //print(message);
+        //endregion
+    }
+
+    public static void log(String message) {
+        //region output
+        flushInt();
+        print(message,"string");
+        //aaa(message);
+        //endregion
+    }
+
+    private static void aaa(String message){
+        if(message.equals(lastStr)){
+            buffer++;
+        } else {
+            fullStr = bbb(buffer+1);
+            fullStr += message + "\r\n";
+        }
+        lastStr = message;
+    }
+
+    private static String bbb(int buffer){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(buffer > 1){
+            stringBuilder.append("(x").append(buffer).append(")");
+        }
+        return stringBuilder.toString();
+    }
+
+    public static void log(boolean message) {
+        //region output
+        print(message,"primitive");
+        //endregion
+    }
+
+    public static void log(Object message) {
+        //region output
+        print(message,"reference");
+        //print(message);
+        //endregion
+    }
+
+    public static void log(int[] arr){
+        StringBuilder stringBuilder = new StringBuilder("primitives array: {");
+        stringBuilder = arrToString(arr, stringBuilder);
+        stringBuilder.append("}");
+        print(stringBuilder.toString());
+    }
+
+    private static StringBuilder arrToString(int[] arr, StringBuilder stringBuilder){
+        for (int item : arr){
+            stringBuilder.append(item+", ");
+        }
+        stringBuilder.delete(stringBuilder.length()-2,stringBuilder.length());
+        return  stringBuilder;
+    }
+
+    public static void log(int[][] arr){
+        StringBuilder stringBuilder = new StringBuilder("primitives matrix: {\r\n");
+        for (int[] item : arr){
+            stringBuilder.append("{");
+            stringBuilder = arrToString(item,stringBuilder);
+            stringBuilder.append("}\r\n");
+        }
+        stringBuilder.append("}");
+        print(stringBuilder.toString());
+    }
+
+
+
+    private static void print(Object message, String type) {
+        System.out.println(type + ": " + message);
+    }
+
+    private static void print(Object message) {
+        System.out.println(message);
+    }
+
+    public static void flushInt() {
+        print(buffer,"primitive");
+        buffer = 0;
+    }
+
+    public static void flushStr(){
+        print(fullStr);
+        fullStr = "";
+        lastStr = "";
+        buffer = 0;
     }
 }
 
-class Demo {
-    public static void main(String[] args) {
-        log(1,1);
-        log(0);
-        System.out.println(MY_CONST);
-    }
-}

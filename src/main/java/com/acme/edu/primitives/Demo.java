@@ -61,7 +61,7 @@ public class Demo {
         byte incr = 0b111;
         System.out.println(incr--);
         byte bbbbb = incr++;
-        byte bbbbbb = incr + 1; //arith. promotion
+        //byte bbbbbb = incr + 1; //arith. promotion
 
         incr /= 2; //incr = incr + 2;
 

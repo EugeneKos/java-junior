@@ -34,7 +34,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitives array: {-1, 0, 1}\r\n"
+                "primitives array: {-1, 0, 1}\n"
         );
         //endregion
     }
@@ -47,11 +47,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitives matrix: {\r\n" +
-                        "{-1, 0, 1}\r\n" +
-                        "{1, 2, 3}\r\n" +
-                        "{-1, -2, -3}\r\n" +
-                        "}\r\n"
+                "primitives matrix: {\n" +
+                        "{-1, 0, 1}\n" +
+                        "{1, 2, 3}\n" +
+                        "{-1, -2, -3}\n" +
+                        "}\n"
         );
         //endregion
     }

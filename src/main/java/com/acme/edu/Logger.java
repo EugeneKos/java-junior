@@ -18,13 +18,14 @@ gkjfhkgjfhg
 public class Logger {
 
     public static int buffer = 0;
+    public static int bufferStr = 0;
 
     private static String fullStr = "";
     private static String lastStr = "";
 
     public static void log(int message) {
         //region output
-        //flushStr();
+        flushStr();
         buffer = checkOwerflowSum(message);
         //endregion
     }
@@ -41,44 +42,49 @@ public class Logger {
 
     public static void log(byte message) {
         //region output
-        
         print(message,"primitive");
-        //print(message);
         //endregion
     }
 
     public static void log(char message) {
         //region output
         print(message,"char");
-        //print(message);
         //endregion
     }
 
     public static void log(String message) {
         //region output
         flushInt();
-        print(message,"string");
-        //aaa(message);
+        buildStr(message);
         //endregion
     }
 
-    private static void aaa(String message){
+    private static void buildStr(String message){
         if(message.equals(lastStr)){
-            buffer++;
+            bufferStr++;
         } else {
-            fullStr = bbb(buffer+1);
-            fullStr += message + "\r\n";
+            indexingStr();
+            fullStr += message + "\n";
         }
         lastStr = message;
     }
 
-    private static String bbb(int buffer){
-        StringBuilder stringBuilder = new StringBuilder();
-        if(buffer > 1){
-            stringBuilder.append("(x").append(buffer).append(")");
+    private static void indexingStr(){
+        if(bufferStr > 0){
+            deleteLastSymStr();
+            fullStr += " (x" + (bufferStr + 1) + ")\n";
+            bufferStr = 0;
         }
-        return stringBuilder.toString();
     }
+
+    private static void deleteLastSymStr() {
+        if(!fullStr.equals("")){
+            StringBuilder stringBuilder = new StringBuilder(fullStr);
+            stringBuilder.delete(stringBuilder.length()-1,stringBuilder.length());
+            fullStr = stringBuilder.toString();
+        }
+    }
+
 
     public static void log(boolean message) {
         //region output
@@ -89,7 +95,6 @@ public class Logger {
     public static void log(Object message) {
         //region output
         print(message,"reference");
-        //print(message);
         //endregion
     }
 
@@ -109,11 +114,11 @@ public class Logger {
     }
 
     public static void log(int[][] arr){
-        StringBuilder stringBuilder = new StringBuilder("primitives matrix: {\r\n");
+        StringBuilder stringBuilder = new StringBuilder("primitives matrix: {\n");
         for (int[] item : arr){
             stringBuilder.append("{");
             stringBuilder = arrToString(item,stringBuilder);
-            stringBuilder.append("}\r\n");
+            stringBuilder.append("}\n");
         }
         stringBuilder.append("}");
         print(stringBuilder.toString());
@@ -135,10 +140,11 @@ public class Logger {
     }
 
     public static void flushStr(){
-        print(fullStr);
+        indexingStr();
+        deleteLastSymStr();
+        print(fullStr,"string");
         fullStr = "";
         lastStr = "";
-        buffer = 0;
     }
 }
 

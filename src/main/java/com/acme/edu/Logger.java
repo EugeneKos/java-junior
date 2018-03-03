@@ -8,6 +8,12 @@ gkjfhkgjfhg
  */
 
 
+import com.acme.edu.disign.Design;
+import com.acme.edu.handler.Handler;
+import com.acme.edu.handler.IntegerHandler;
+import com.acme.edu.handler.StringHandler;
+import com.acme.edu.printer.ConsolePrinter;
+
 /**
  * Logs messages.
  *
@@ -17,27 +23,14 @@ gkjfhkgjfhg
  */
 public class Logger {
 
-    public static int buffer = 0;
-    public static int bufferStr = 0;
-
-    private static String fullStr = "";
-    private static String lastStr = "";
+    private static Handler[] handlers = {new IntegerHandler(new ConsolePrinter(), new Design("primitive: ")),
+            new StringHandler(new ConsolePrinter(), new Design("string: "))};
 
     public static void log(int message) {
         //region output
+        handlers[0].perform(message);
         flushStr();
-        buffer = checkOwerflowSum(message);
         //endregion
-    }
-
-    private static int checkOwerflowSum(int message){
-        int sum = message + buffer;
-        if((sum < message || sum < buffer) && sum != message && sum != buffer){
-            print(buffer);
-        } else {
-            return sum;
-        }
-        return Integer.MAX_VALUE;
     }
 
     public static void log(byte message) {
@@ -55,36 +48,10 @@ public class Logger {
     public static void log(String message) {
         //region output
         flushInt();
-        buildStr(message);
+        handlers[1].perform(message);
+        //buildStr(message);
         //endregion
     }
-
-    private static void buildStr(String message){
-        if(message.equals(lastStr)){
-            bufferStr++;
-        } else {
-            indexingStr();
-            fullStr += message + "\n";
-        }
-        lastStr = message;
-    }
-
-    private static void indexingStr(){
-        if(bufferStr > 0){
-            deleteLastSymStr();
-            fullStr += " (x" + (bufferStr + 1) + ")\n";
-            bufferStr = 0;
-        }
-    }
-
-    private static void deleteLastSymStr() {
-        if(!fullStr.equals("")){
-            StringBuilder stringBuilder = new StringBuilder(fullStr);
-            stringBuilder.delete(stringBuilder.length()-1,stringBuilder.length());
-            fullStr = stringBuilder.toString();
-        }
-    }
-
 
     public static void log(boolean message) {
         //region output
@@ -135,16 +102,11 @@ public class Logger {
     }
 
     public static void flushInt() {
-        print(buffer,"primitive");
-        buffer = 0;
+        handlers[0].flush();
     }
 
     public static void flushStr(){
-        indexingStr();
-        deleteLastSymStr();
-        print(fullStr,"string");
-        fullStr = "";
-        lastStr = "";
+        handlers[1].flush();
     }
 }
 

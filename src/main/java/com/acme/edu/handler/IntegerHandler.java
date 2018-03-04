@@ -4,8 +4,6 @@ import com.acme.edu.disign.Design;
 import com.acme.edu.printer.Printer;
 
 public class IntegerHandler extends Handler {
-
-
     private int buffer;
 
     public IntegerHandler(Printer printer, Design design) {

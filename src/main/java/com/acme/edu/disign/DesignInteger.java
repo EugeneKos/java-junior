@@ -1,5 +1,9 @@
 package com.acme.edu.disign;
 
+/**
+ * @author MishaAndEugen
+ * класс DesignInteger отвечает за возможность изменения стиля вывода
+ */
 public class DesignInteger extends Design {
 
     private String ssss;

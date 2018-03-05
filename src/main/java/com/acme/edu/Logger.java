@@ -1,18 +1,9 @@
 package com.acme.edu;
 
-//kdjghdfkgjhdfkgjhdfkgj
-/*
-gkjfhkgjfhg
-лоралопралопр
-лпораплорапл
- */
-
-
 import com.acme.edu.disign.Design;
-import com.acme.edu.handler.Handler;
-import com.acme.edu.handler.IntegerHandler;
-import com.acme.edu.handler.StringHandler;
+import com.acme.edu.handler.*;
 import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.Printer;
 
 /**
  * Logs messages.
@@ -22,91 +13,63 @@ import com.acme.edu.printer.ConsolePrinter;
  * @see
  */
 public class Logger {
-
-    private static Handler[] handlers = {new IntegerHandler(new ConsolePrinter(), new Design("primitive: ")),
-            new StringHandler(new ConsolePrinter(), new Design("string: "))};
+    private static LoggerController loggerController = new LoggerController();
+    private static Printer printer = new ConsolePrinter();
 
     public static void log(int message) {
         //region output
-        handlers[0].perform(message);
-        flushStr();
+        Handler handler = new IntegerHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
     public static void log(byte message) {
         //region output
-        print(message,"primitive");
+        Handler handler = new ByteHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
     public static void log(char message) {
         //region output
-        print(message,"char");
+        Handler handler = new CharHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
     public static void log(String message) {
         //region output
-        flushInt();
-        handlers[1].perform(message);
-        //buildStr(message);
+        Handler handler = new StringHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
     public static void log(boolean message) {
         //region output
-        print(message,"primitive");
+        Handler handler = new BooleanHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
     public static void log(Object message) {
         //region output
-        print(message,"reference");
+        Handler handler = new ObjectHandler(message,printer);
+        loggerController.execute(handler);
         //endregion
     }
 
-    public static void log(int[] arr){
-        StringBuilder stringBuilder = new StringBuilder("primitives array: {");
-        stringBuilder = arrToString(arr, stringBuilder);
-        stringBuilder.append("}");
-        print(stringBuilder.toString());
+    public static void log(int[] array){
+        Handler handler = new ArrayHandler(array,printer);
+        loggerController.execute(handler);
     }
 
-    private static StringBuilder arrToString(int[] arr, StringBuilder stringBuilder){
-        for (int item : arr){
-            stringBuilder.append(item+", ");
-        }
-        stringBuilder.delete(stringBuilder.length()-2,stringBuilder.length());
-        return  stringBuilder;
+    public static void log(int[][] matrix){
+        Handler handler = new MatrixHandler(matrix,printer);
+        loggerController.execute(handler);
     }
 
-    public static void log(int[][] arr){
-        StringBuilder stringBuilder = new StringBuilder("primitives matrix: {\n");
-        for (int[] item : arr){
-            stringBuilder.append("{");
-            stringBuilder = arrToString(item,stringBuilder);
-            stringBuilder.append("}\n");
-        }
-        stringBuilder.append("}");
-        print(stringBuilder.toString());
+    public static void flush(){
+        loggerController.flush();
     }
 
-
-
-    private static void print(Object message, String type) {
-        System.out.println(type + ": " + message);
-    }
-
-    private static void print(Object message) {
-        System.out.println(message);
-    }
-
-    public static void flushInt() {
-        handlers[0].flush();
-    }
-
-    public static void flushStr(){
-        handlers[1].flush();
-    }
 }
-

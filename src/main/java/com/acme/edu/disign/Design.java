@@ -1,5 +1,9 @@
 package com.acme.edu.disign;
 
+/**
+ * @author MishaAndEugen
+ * класс дизайн отвечает за стиль вывода
+ */
 public class Design {
     private final String type;
     private String prefix;

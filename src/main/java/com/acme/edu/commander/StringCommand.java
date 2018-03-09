@@ -1,24 +1,25 @@
-package com.acme.edu.handler;
+package com.acme.edu.commander;
 
-import com.acme.edu.disign.Design;
-import com.acme.edu.printer.Printer;
+import com.acme.edu.formatter.FormatVisitor;
 
-public class StringHandler implements Handler {
+public class StringCommand implements Command {
     private String stringMessage;
-    private Printer printer;
     private String lastStr = "";
     private String fullStr = "";
     private int buffer;
+    private boolean isFlush;
 
-    public StringHandler(String message, Printer printer) {
+    public StringCommand(String message) {
         stringMessage = message;
-        this.printer = printer;
     }
 
-
     @Override
-    public void handle() {
+    public Command perform(Command command) {
+        if(command instanceof StringCommand){
+            stringMessage = ((StringCommand)command).getStringMessage();
+        }
         buildStr(stringMessage);
+        return this;
     }
 
     private void buildStr(String stringMessage){
@@ -29,6 +30,7 @@ public class StringHandler implements Handler {
             fullStr += stringMessage + "\n";
         }
         lastStr = stringMessage;
+        isFlush = true;
     }
 
     private void indexingStr(){
@@ -47,27 +49,36 @@ public class StringHandler implements Handler {
         }
     }
 
+    public String getStringMessage(){
+        return stringMessage;
+    }
+
+    public String getFullStr(){
+        return fullStr;
+    }
+
     @Override
-    public void flush() {
+    public void accept(FormatVisitor formatVisitor) {
         indexingStr();
         deleteLastSymStr();
-        printer.print("string: "+fullStr);
+        fullStr = formatVisitor.formatString(this);
+    }
+
+    @Override
+    public void flush() {
         fullStr = "";
         lastStr = "";
+        isFlush = false;
     }
 
     @Override
-    public void setBuffer(String buffer) {
-        String[] masBuffer = buffer.split(":");
-        lastStr = masBuffer[0];
-        fullStr = masBuffer[1];
-        this.buffer = Integer.parseInt(masBuffer[2]);
+    public boolean isFlush() {
+        return isFlush;
     }
 
     @Override
-    public String getBuffer() {
-        return lastStr+":"+fullStr+":"+buffer;
+    public String toString(){
+        return fullStr;
     }
-
 
 }

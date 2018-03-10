@@ -1,14 +1,19 @@
 package com.acme.edu;
 
-import com.acme.edu.commander.DefaultCommand;
+import com.acme.edu.commander.BooleanCommand;
 import com.acme.edu.commander.Command;
 import com.acme.edu.formatter.FormatVisitor;
 import com.acme.edu.formatter.PrefixFormatVisitor;
 import com.acme.edu.printer.Printer;
 
+/**
+ * Класс управления командами, форматированием и печатью.
+ * @author eugene
+ */
+
 public class LoggerController {
     private Printer printer;
-    private Command currentCommand = new DefaultCommand();
+    private Command currentCommand = new BooleanCommand();
     private FormatVisitor formatter = new PrefixFormatVisitor();
 
     public LoggerController(Printer printer) {
@@ -25,7 +30,7 @@ public class LoggerController {
 
 
     public void flush(){
-        if(currentCommand.isFlush()){
+        if(currentCommand.isReadyFlush()){
             formatAndSave();
             currentCommand.flush();
         }

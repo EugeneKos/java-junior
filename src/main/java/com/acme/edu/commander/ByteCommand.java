@@ -2,11 +2,17 @@ package com.acme.edu.commander;
 
 import com.acme.edu.formatter.FormatVisitor;
 
+/**
+ * @author eugene
+ * Класс ByteCommand предназначен для получения новой команды с сообщением типа byte и
+ * дальнейшего аккумулирования
+ */
+
 public class ByteCommand implements Command {
     private byte byteMessage;
     private byte buffer;
-    private boolean isFlush;
-    private String forPrint = "";
+    private boolean readyFlush;
+    private String result = "";
 
     public ByteCommand(byte byteMessage) {
         this.byteMessage = byteMessage;
@@ -15,15 +21,14 @@ public class ByteCommand implements Command {
     private void accumulator(byte byteMessage) {
         if(!checkOwerflow(byteMessage)){
             buffer += byteMessage;
-            isFlush = true;
+            readyFlush = true;
         }
     }
 
     private boolean checkOwerflow(byte byteMessage) {
         byte delta = (byte) (Byte.MAX_VALUE - buffer);
         if (byteMessage > delta) {
-            buffer = Byte.MAX_VALUE;
-            forPrint += Byte.MAX_VALUE + "\n";
+            result += Byte.MAX_VALUE + "\n";
             buffer = (byte) (byteMessage - delta);
             return  true;
         }
@@ -49,22 +54,23 @@ public class ByteCommand implements Command {
 
     @Override
     public void accept(FormatVisitor formatVisitor) {
-        forPrint += formatVisitor.formatByte(this);
+        result += formatVisitor.formatByte(this);
     }
 
     @Override
     public void flush() {
         buffer = 0;
-        isFlush = false;
+        result = "";
+        readyFlush = false;
     }
 
     @Override
-    public boolean isFlush() {
-        return isFlush;
+    public boolean isReadyFlush() {
+        return readyFlush;
     }
 
     @Override
     public String toString(){
-        return forPrint;
+        return result;
     }
 }

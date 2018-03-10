@@ -15,7 +15,7 @@ public class PrefixFormatVisitor implements FormatVisitor {
 
     @Override
     public String formatString(StringCommand stringCommand) {
-        return "string: "+stringCommand.getFullStr();
+        return "string: "+stringCommand.getResult();
     }
 
     @Override
@@ -35,12 +35,12 @@ public class PrefixFormatVisitor implements FormatVisitor {
 
     @Override
     public String formatArray(ArrayCommand arrayCommand) {
-        return "primitives array: "+arrayCommand.getForPrint();
+        return "primitives array: "+arrayCommand.getResult();
     }
 
     @Override
     public String formatMatrix(MatrixCommand matrixCommand) {
-        return "primitives matrix: "+matrixCommand.getForPrint();
+        return "primitives matrix: "+matrixCommand.getResult();
     }
 
     @Override

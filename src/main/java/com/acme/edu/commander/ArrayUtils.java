@@ -1,5 +1,10 @@
 package com.acme.edu.commander;
 
+/**
+ * @author eugene
+ * Класс ArrayUtils предназначен для преобразования массивов в строку.
+ */
+
 public class ArrayUtils {
 
     public static String arrayToString(int[] array){
@@ -17,7 +22,6 @@ public class ArrayUtils {
         for (int[] item : array){
             stringBuilder.append(arrayToString(item)).append("\n");
         }
-        //stringBuilder.delete(stringBuilder.length()-2,stringBuilder.length());
         stringBuilder.append("}");
         return  stringBuilder.toString();
     }

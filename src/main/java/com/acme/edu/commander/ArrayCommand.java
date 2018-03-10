@@ -2,10 +2,16 @@ package com.acme.edu.commander;
 
 import com.acme.edu.formatter.FormatVisitor;
 
+/**
+ * @author eugene
+ * Класс ArrayCommand предназначен для получения новой команды с сообщением типа int[] и
+ * передачи этого сообщения в Visitor для дальнейшего форматироания.
+ */
+
 public class ArrayCommand implements Command {
     private int[] arrayMessage;
-    private String forPrint;
-    private boolean isFlush;
+    private String result;
+    private boolean readyFlush;
 
     public ArrayCommand(int[] message) {
         arrayMessage = message;
@@ -15,12 +21,12 @@ public class ArrayCommand implements Command {
         return arrayMessage;
     }
 
-    public String getForPrint() {
-        return forPrint;
+    public String getResult() {
+        return result;
     }
 
     private void buildArrayString(){
-        forPrint = ArrayUtils.arrayToString(arrayMessage);
+        result = ArrayUtils.arrayToString(arrayMessage);
     }
 
     @Override
@@ -28,29 +34,29 @@ public class ArrayCommand implements Command {
         if(command instanceof ArrayCommand){
             arrayMessage = ((ArrayCommand)command).getArrayMessage();
             buildArrayString();
-            isFlush = true;
+            readyFlush = true;
         }
         return this;
     }
 
     @Override
     public void accept(FormatVisitor formatVisitor) {
-        forPrint = formatVisitor.formatArray(this);
+        result = formatVisitor.formatArray(this);
     }
 
     @Override
     public void flush() {
-        isFlush = false;
+        readyFlush = false;
     }
 
     @Override
-    public boolean isFlush() {
-        return isFlush;
+    public boolean isReadyFlush() {
+        return readyFlush;
     }
 
     @Override
     public String toString(){
-        return forPrint;
+        return result;
     }
 
 }

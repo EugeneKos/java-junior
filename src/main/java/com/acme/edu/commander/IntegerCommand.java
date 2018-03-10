@@ -2,11 +2,17 @@ package com.acme.edu.commander;
 
 import com.acme.edu.formatter.FormatVisitor;
 
+/**
+ * @author eugene
+ * Класс IntegerCommand предназначен для получения новой команды с сообщением типа int,
+ * аккумулирования передачи этого сообщения в Visitor для дальнейшего форматироания.
+ */
+
 public class IntegerCommand implements Command {
     private int buffer;
     private int intMessage;
-    private String forPrint = "";
-    private boolean isFlush;
+    private String result = "";
+    private boolean readyFlush;
 
     public IntegerCommand(int message) {
         intMessage = message;
@@ -15,15 +21,14 @@ public class IntegerCommand implements Command {
     private void accumulator(int intMessage) {
         if(!checkOwerflow(intMessage)){
             buffer += intMessage;
-            isFlush = true;
+            readyFlush = true;
         }
     }
 
     private boolean checkOwerflow(int intMessage) {
         int delta = Integer.MAX_VALUE - buffer;
         if (intMessage > delta) {
-            //buffer = Integer.MAX_VALUE;
-            forPrint += Integer.MAX_VALUE + "\n";
+            result += Integer.MAX_VALUE + "\n";
             buffer = intMessage - delta;
             return  true;
         }
@@ -41,18 +46,19 @@ public class IntegerCommand implements Command {
 
     @Override
     public void accept(FormatVisitor formatVisitor) {
-        forPrint += formatVisitor.formatInteger(this);
+        result += formatVisitor.formatInteger(this);
     }
 
     @Override
     public void flush() {
         buffer = 0;
-        isFlush = false;
+        result = "";
+        readyFlush = false;
     }
 
     @Override
-    public boolean isFlush() {
-        return isFlush;
+    public boolean isReadyFlush() {
+        return readyFlush;
     }
 
     public int getIntMessage(){
@@ -64,6 +70,6 @@ public class IntegerCommand implements Command {
     }
 
     public String toString(){
-        return forPrint;
+        return result;
     }
 }

@@ -2,12 +2,18 @@ package com.acme.edu.commander;
 
 import com.acme.edu.formatter.FormatVisitor;
 
+/**
+ * @author eugene
+ * Класс StringCommand предназначен для получения новой команды с сообщением типа String,
+ * аккумулирования и передачи этого сообщения в Visitor для дальнейшего форматироания.
+ */
+
 public class StringCommand implements Command {
     private String stringMessage;
     private String lastStr = "";
-    private String fullStr = "";
+    private String result = "";
     private int buffer;
-    private boolean isFlush;
+    private boolean readyFlush;
 
     public StringCommand(String message) {
         stringMessage = message;
@@ -27,25 +33,25 @@ public class StringCommand implements Command {
             buffer++;
         } else {
             indexingStr();
-            fullStr += stringMessage + "\n";
+            result += stringMessage + "\n";
         }
         lastStr = stringMessage;
-        isFlush = true;
+        readyFlush = true;
     }
 
     private void indexingStr(){
         if(buffer > 0){
             deleteLastSymStr();
-            fullStr += " (x" + (buffer + 1) + ")\n";
+            result += " (x" + (buffer + 1) + ")\n";
             buffer = 0;
         }
     }
 
     private void deleteLastSymStr() {
-        if(!fullStr.equals("")){
-            StringBuilder stringBuilder = new StringBuilder(fullStr);
+        if(!result.equals("")){
+            StringBuilder stringBuilder = new StringBuilder(result);
             stringBuilder.delete(stringBuilder.length()-1,stringBuilder.length());
-            fullStr = stringBuilder.toString();
+            result = stringBuilder.toString();
         }
     }
 
@@ -53,32 +59,32 @@ public class StringCommand implements Command {
         return stringMessage;
     }
 
-    public String getFullStr(){
-        return fullStr;
+    public String getResult(){
+        return result;
     }
 
     @Override
     public void accept(FormatVisitor formatVisitor) {
         indexingStr();
         deleteLastSymStr();
-        fullStr = formatVisitor.formatString(this);
+        result = formatVisitor.formatString(this);
     }
 
     @Override
     public void flush() {
-        fullStr = "";
+        result = "";
         lastStr = "";
-        isFlush = false;
+        readyFlush = false;
     }
 
     @Override
-    public boolean isFlush() {
-        return isFlush;
+    public boolean isReadyFlush() {
+        return readyFlush;
     }
 
     @Override
     public String toString(){
-        return fullStr;
+        return result;
     }
 
 }

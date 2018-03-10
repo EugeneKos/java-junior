@@ -6,7 +6,8 @@ public class PostfixFormatter implements FormatVisitor {
 
     @Override
     public String formatInteger(IntegerCommand integerCommand) {
-        return integerCommand.getBuffer()+" postfix";
+        return null;
+
     }
 
     @Override

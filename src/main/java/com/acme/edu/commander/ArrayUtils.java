@@ -17,7 +17,7 @@ public class ArrayUtils {
         return  stringBuilder.toString();
     }
 
-    public static String arrayToString(int[][] array){
+    public static String matrixToString(int[][] array){
         StringBuilder stringBuilder = new StringBuilder("{\n");
         for (int[] item : array){
             stringBuilder.append(arrayToString(item)).append("\n");

@@ -26,7 +26,7 @@ public class MatrixCommand implements Command {
     }
 
     private void buildArrayString(){
-        result = ArrayUtils.arrayToString(matrixMessage);
+        result = ArrayUtils.matrixToString(matrixMessage);
     }
 
     @Override

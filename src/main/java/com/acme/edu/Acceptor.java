@@ -10,16 +10,17 @@ public class Acceptor {
 
     public void start(){
         try (ServerSocket portListener = new ServerSocket(4040)){
-            System.out.println("listening...");
-            while(true){
 
+            while(true){
+                System.out.println("listening...");
                 try(Socket socket = portListener.accept();
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream())) {
-                    System.out.println("Connection OK");
+                    System.out.println("connection OK");
                     while(true){
                         //int temp = (int) is.readObject();
-                        Logger.log((int) is.readObject());
+                        //Logger.log((int) is.readObject());
+                        ServerProxy.log(is.readObject());
                         Logger.flush();
                         os.writeObject("logger wrote");
                     }
